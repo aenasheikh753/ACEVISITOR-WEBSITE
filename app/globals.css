@@ -1,0 +1,339 @@
+@import "tailwindcss";
+
+/* Stroke colours built dynamically by the illustration components */
+@source inline("stroke-{primary,accent,pop,tint,paper,ink,accent-soft,pop-soft}");
+
+/* =========================================================
+   AceVisitor · "Plum & Apricot" theme tokens
+   Every colour, font, radius and shadow lives here so a CMS
+   theme can override them without touching components.
+   ========================================================= */
+:root {
+  /* Core palette */
+  --ink: #2a1b33;
+  --primary: #7b2d8e;
+  --accent: #ff9f45;
+  --pop: #4fb3e8;
+  --paper: #fff8f1;
+  --tint: #f3eafb;
+
+  /* Supporting tones derived from the palette */
+  --accent-soft: #ffe8d1;
+  --pop-soft: #e3f2fc;
+  --primary-deep: #5e1f6e;
+  --ink-soft: #54465e;
+  --ink-muted: #75687f;
+  --paper-line: #eadfd3;
+  --white: #ffffff;
+  --success: #1f8a5b;
+
+  /* Illustration skin tones */
+  --skin-light: #f6cfae;
+  --skin-mid: #d79a6c;
+  --skin-deep: #8d5a3c;
+
+  /* Typography */
+  --font-display: var(--font-bricolage), "Trebuchet MS", sans-serif;
+  --font-body: var(--font-instrument), "Segoe UI", sans-serif;
+
+  /* Radii */
+  --radius-btn: 10px;
+  --radius-tag: 6px;
+  --radius-card: 18px;
+  --radius-blob: 32px;
+  --radius-pill: 999px;
+
+  /* Shadows: hard "printed" offsets plus one soft lift */
+  --shadow-hard: 4px 4px 0 0 var(--ink);
+  --shadow-hard-sm: 2px 2px 0 0 var(--ink);
+  --shadow-primary: 7px 7px 0 0 var(--primary);
+  --shadow-accent: 7px 7px 0 0 var(--accent);
+  --shadow-lift: 0 22px 44px -28px rgba(42, 27, 51, 0.55);
+
+  /* Layout */
+  --section-y: clamp(4.5rem, 9vw, 7.5rem);
+  --nav-h: 76px;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-pop: var(--pop);
+  --color-paper: var(--paper);
+  --color-tint: var(--tint);
+  --color-accent-soft: var(--accent-soft);
+  --color-pop-soft: var(--pop-soft);
+  --color-primary-deep: var(--primary-deep);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-paper-line: var(--paper-line);
+  --color-white: var(--white);
+  --color-success: var(--success);
+  --color-skin-light: var(--skin-light);
+  --color-skin-mid: var(--skin-mid);
+  --color-skin-deep: var(--skin-deep);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-sans: var(--font-body);
+
+  --radius-btn: var(--radius-btn);
+  --radius-tag: var(--radius-tag);
+  --radius-card: var(--radius-card);
+  --radius-blob: var(--radius-blob);
+  --radius-pill: var(--radius-pill);
+
+  --shadow-hard: var(--shadow-hard);
+  --shadow-hard-sm: var(--shadow-hard-sm);
+  --shadow-primary: var(--shadow-primary);
+  --shadow-accent: var(--shadow-accent);
+  --shadow-lift: var(--shadow-lift);
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Fine paper grain so flat colour feels printed, not rendered */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.on-dark :focus-visible,
+.on-dark:focus-visible {
+  outline-color: var(--accent);
+}
+
+/* ---------- Shared art helpers ---------- */
+.art-stroke {
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Animated parts inside SVGs rotate around their own box */
+.anim-part {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.origin-top {
+  transform-origin: top center;
+}
+.origin-bottom {
+  transform-origin: bottom center;
+}
+.origin-left {
+  transform-origin: left center;
+}
+
+/* ---------- Icon animations (loop gently, play bigger on hover) ---------- */
+@keyframes av-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes av-swing {
+  0%, 100% { transform: rotate(-7deg); }
+  50% { transform: rotate(7deg); }
+}
+@keyframes av-buzz {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-9deg); }
+  40% { transform: rotate(9deg); }
+  60% { transform: rotate(-6deg); }
+  80% { transform: rotate(6deg); }
+}
+@keyframes av-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+@keyframes av-scan {
+  0%, 100% { transform: translateY(-5px); }
+  50% { transform: translateY(5px); }
+}
+@keyframes av-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes av-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.18); opacity: 0.75; }
+}
+@keyframes av-door {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.55); }
+}
+@keyframes av-slide {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+@keyframes av-print {
+  0% { transform: translateY(-6px); }
+  60%, 100% { transform: translateY(2px); }
+}
+@keyframes av-draw {
+  0% { stroke-dashoffset: 40; }
+  60%, 100% { stroke-dashoffset: 0; }
+}
+@keyframes av-flap {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(-0.6); }
+}
+@keyframes av-float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-8px) rotate(1.5deg); }
+}
+@keyframes av-wave {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-22deg); }
+  75% { transform: rotate(12deg); }
+}
+@keyframes av-dash {
+  to { stroke-dashoffset: -24; }
+}
+@keyframes av-pop-in {
+  0% { transform: scale(0.6) rotate(-8deg); opacity: 0; }
+  100% { transform: scale(1) rotate(var(--tilt, 0deg)); opacity: 1; }
+}
+
+.ic-bob { animation: av-bob 2.6s ease-in-out infinite; }
+.ic-swing { animation: av-swing 2.8s ease-in-out infinite; transform-origin: top center; }
+.ic-buzz { animation: av-buzz 2.4s ease-in-out infinite; }
+.ic-blink { animation: av-blink 4s ease-in-out infinite; }
+.ic-scan { animation: av-scan 2.2s ease-in-out infinite; }
+.ic-spin { animation: av-spin 9s linear infinite; }
+.ic-pulse { animation: av-pulse 2s ease-in-out infinite; }
+.ic-door { animation: av-door 3.2s ease-in-out infinite; transform-origin: left center; }
+.ic-slide { animation: av-slide 1.6s ease-in-out infinite; }
+.ic-print { animation: av-print 2.4s ease-in-out infinite; }
+.ic-draw { stroke-dasharray: 40; animation: av-draw 3s ease-in-out infinite; }
+.ic-flap { animation: av-flap 3.4s ease-in-out infinite; transform-origin: top center; }
+.ic-dash { stroke-dasharray: 6 6; animation: av-dash 1.2s linear infinite; }
+
+.art-float { animation: av-float 6s ease-in-out infinite; }
+.art-wave { animation: av-wave 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 15% 90%; }
+.art-blink { animation: av-blink 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.art-dash { stroke-dasharray: 7 9; animation: av-dash 1.4s linear infinite; }
+
+@keyframes av-barrier {
+  0%, 30%, 100% { transform: rotate(0); }
+  45%, 80% { transform: rotate(-38deg); }
+}
+.ring-spin { animation: av-spin 70s linear infinite; }
+.ring-counter { animation: av-spin 70s linear infinite reverse; }
+
+.gate-arm { animation: av-barrier 6s ease-in-out infinite; transform-origin: 0% 50%; }
+
+/* Hover a host element to speed every icon part up */
+.icon-host:hover [class*="ic-"],
+.icon-host:focus-visible [class*="ic-"] {
+  animation-duration: 0.8s;
+}
+.icon-host .av-icon {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.icon-host:hover .av-icon {
+  transform: rotate(-6deg) scale(1.08);
+}
+
+/* ---------- Journey stops light up as the road reaches them ---------- */
+.journey-stop {
+  transition:
+    background-color 0.35s ease,
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease;
+}
+.journey-stop.is-lit {
+  background: var(--accent);
+  transform: rotate(-8deg) scale(1.08);
+  box-shadow: var(--shadow-hard);
+}
+
+/* ---------- Buttons: press feedback ---------- */
+.btn-press {
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.btn-press:hover {
+  transform: translate(-2px, -2px);
+}
+.btn-press:active {
+  transform: translate(2px, 2px) scale(0.98);
+  box-shadow: none;
+}
+
+/* ---------- Hand-drawn underline ---------- */
+.scribble {
+  position: relative;
+  white-space: nowrap;
+  display: inline-block;
+}
+.scribble > svg {
+  position: absolute;
+  left: -3%;
+  bottom: -0.18em;
+  width: 106%;
+  height: 0.42em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

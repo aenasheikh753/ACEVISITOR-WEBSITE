@@ -53,7 +53,7 @@ export default async function PlatformPage() {
             </h2>
             <CheckList items={c.console.bullets} className="mt-8" />
           </div>
-          <div className="lg:rotate-1" data-fx="slide" data-from="right">
+          <div className="min-w-0 lg:rotate-1" data-fx="slide" data-from="right">
             <div className="rounded-[20px] shadow-primary">
               <ConsoleScreen c={samples.console} />
             </div>

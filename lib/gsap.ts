@@ -14,4 +14,6 @@ export function getGsap() {
   return { gsap, ScrollTrigger };
 }
 
-export const MOTION_OK = "(prefers-reduced-motion: no-preference)";
+/** Animations always run; only parallax checks REDUCED_MOTION to tone itself down. */
+export const MOTION_OK = "all";
+export const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";

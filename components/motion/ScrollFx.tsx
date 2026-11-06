@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { getGsap, MOTION_OK } from "@/lib/gsap";
+import { getGsap, MOTION_OK, REDUCED_MOTION } from "@/lib/gsap";
 
 /**
  * One small controller that wires declarative `data-fx` hooks inside server-rendered
- * markup to GSAP + ScrollTrigger. Nothing is hidden without JS, and everything is
- * skipped under prefers-reduced-motion.
+ * markup to GSAP + ScrollTrigger. Nothing is hidden without JS. Everything runs for
+ * every visitor; only scroll-linked parallax is skipped under prefers-reduced-motion.
  *
  *  data-fx="draw"      stroke paths with pathLength=1 draw in when visible
  *  data-fx="stamp"     element thumps in like a rubber stamp
@@ -20,6 +20,7 @@ export function ScrollFx() {
     const mm = gsap.matchMedia();
 
     mm.add(MOTION_OK, () => {
+      const reduced = window.matchMedia(REDUCED_MOTION).matches;
       gsap.utils.toArray<SVGPathElement>('[data-fx="draw"]').forEach((el) => {
         gsap.fromTo(
           el,
@@ -62,6 +63,7 @@ export function ScrollFx() {
       });
 
       gsap.utils.toArray<HTMLElement>('[data-fx="parallax"]').forEach((el) => {
+        if (reduced) return;
         const speed = Number(el.dataset.speed ?? 40);
         gsap.fromTo(
           el,

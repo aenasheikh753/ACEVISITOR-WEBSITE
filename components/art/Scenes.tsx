@@ -70,7 +70,7 @@ export function PlatformArt({ label, nodes }: { label: string; nodes: { console:
       {links.map((d, i) => (
         <g key={d}>
           <path d={d} fill="none" className="stroke-primary art-dash" strokeWidth={3} strokeLinecap="round" />
-          <circle r="6" className="fill-accent motion-reduce:hidden" stroke="var(--ink)" strokeWidth={2}>
+          <circle r="6" className="fill-accent" stroke="var(--ink)" strokeWidth={2}>
             <animateMotion dur={`${2.6 + i * 0.4}s`} repeatCount="indefinite" path={d} keyPoints={i % 2 ? "1;0" : "0;1"} keyTimes="0;1" calcMode="linear" />
           </circle>
         </g>

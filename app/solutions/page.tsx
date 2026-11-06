@@ -24,7 +24,7 @@ function BlockArt({ block, console }: { block: SolutionBlock; console: ConsoleCo
   }
   if (block.id === "contractors") return <ContractorArt label={block.artLabel} />;
   return (
-    <div role="img" aria-label={block.artLabel} className="-rotate-1 rounded-[20px] shadow-primary">
+    <div role="img" aria-label={block.artLabel} className="rounded-[20px] shadow-primary lg:-rotate-1">
       <div aria-hidden="true">
         <ConsoleScreen c={console} />
       </div>
@@ -47,7 +47,7 @@ export default async function SolutionsPage() {
         return (
           <Section key={block.id} tone={tones[i % tones.length]} labelledBy={`sol-${block.id}`}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <div className={flip ? "lg:order-2" : undefined}>
+              <div className={`min-w-0 ${flip ? "lg:order-2" : ""}`}>
                 <Eyebrow variant="index" index={`${String(i + 1).padStart(2, "0")}/${total}`}>
                   <span className="icon-host inline-flex items-center gap-2">
                     <Icon name={block.icon} size={30} tint="none" />
@@ -59,7 +59,7 @@ export default async function SolutionsPage() {
                 <p className="mt-4 text-lg text-ink-soft">{block.description}</p>
                 <CheckList items={block.bullets} className="mt-8" />
               </div>
-              <div className={`mx-auto w-full max-w-[580px] ${flip ? "lg:order-1" : ""}`} data-fx="slide" data-from={flip ? "left" : "right"}>
+              <div className={`mx-auto w-full min-w-0 max-w-[580px] ${flip ? "lg:order-1" : ""}`} data-fx="slide" data-from={flip ? "left" : "right"}>
                 <BlockArt block={block} console={samples.console} />
               </div>
             </div>

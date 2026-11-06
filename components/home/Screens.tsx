@@ -42,8 +42,25 @@ export function ConsoleScreen({ c }: { c: ConsoleContent }) {
             </div>
           ))}
         </dl>
-        <div className="mt-5 overflow-x-auto">
-          <table className="w-full min-w-[480px] text-left text-[0.95rem]">
+        {/* Phones: stacked rows so nothing overflows */}
+        <ul className="mt-5 divide-y divide-dashed divide-paper-line border-t-2 border-ink sm:hidden">
+          {c.rows.map((r) => (
+            <li key={r.visitor} className="flex items-center justify-between gap-3 py-3">
+              <div className="min-w-0">
+                <p className="truncate font-semibold">{r.visitor}</p>
+                <p className="truncate text-sm text-ink-soft">
+                  {c.columns.host}: {r.host}
+                </p>
+              </div>
+              <div className="flex shrink-0 flex-col items-end gap-1">
+                <span className={`rounded-[var(--radius-pill)] border-2 border-ink px-2 py-0.5 text-[0.7rem] font-bold ${toneChip[r.tone]}`}>{r.status}</span>
+                <span className="font-display text-sm font-bold tabular-nums">{r.time}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-5 hidden overflow-x-auto sm:block">
+          <table className="w-full text-left text-[0.95rem]">
             <thead>
               <tr className="border-b-2 border-ink font-display text-sm">
                 <th scope="col" className="py-2 pr-3 font-bold">{c.columns.visitor}</th>

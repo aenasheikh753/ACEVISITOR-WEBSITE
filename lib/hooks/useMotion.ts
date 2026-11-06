@@ -22,7 +22,8 @@ function hasWebGL() {
   return webglSupport;
 }
 
-const QUERY = "(prefers-reduced-motion: reduce), (max-width: 767px)";
+// 3D is skipped on phones (flat SVG instead); it runs regardless of reduced-motion.
+const QUERY = "(max-width: 767px)";
 const subscribe3D = subscribeMedia(QUERY);
 
 function snapshot3D() {
